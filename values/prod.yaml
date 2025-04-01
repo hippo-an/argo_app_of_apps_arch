@@ -1,0 +1,5 @@
+repoURL: https://github.com/your-org/my-gitops-repo.git
+
+env:
+  name: prod
+  project: project-prod
