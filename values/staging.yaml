@@ -1,5 +1,0 @@
-repoURL: https://github.com/your-org/my-gitops-repo.git
-
-env:
-  name: staging
-  project: project-staging

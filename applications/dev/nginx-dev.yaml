@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nginx-dev
+  namespace: argocd
+spec:
+  project: default
+  # source:
+  #   repoURL: https://charts.bitnami.com/bitnami
+  #   chart: nginx
+  #   targetRevision: 15.5.0 # 15.5.1 15.5.2
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: test-ns
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+  sources:
+  - repoURL: 'https://github.com/hippo-an/argo_app_of_apps_arch.git'
+    ref: values
+  - repoURL: 'https://charts.bitnami.com/bitnami'
+    targetRevision: 15.5.0 # 15.5.1 15.5.2
+    helm:
+      valueFiles:
+        - $values/image-values/dev/nginx-dev-image-values.yaml
+        - $values/additional-values/dev/nginx-dev-additional-values.yaml
+    chart: nginx

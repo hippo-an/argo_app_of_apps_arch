@@ -1,5 +1,5 @@
 repoURL: https://github.com/hippo-an/argo_app_of_apps_arch.git
 
 env:
-  name: dev
-  project: default
+  name: prod
+  project: project-prod
