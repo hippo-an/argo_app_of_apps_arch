@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: {{ .Values.repoURL }}
     targetRevision: main
-    path: environments/{{ .Values.env.name }}
+    path: applications/{{ .Values.env.name }}
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
