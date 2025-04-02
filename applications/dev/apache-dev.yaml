@@ -13,13 +13,12 @@ spec:
       selfHeal: true
       prune: true
   sources:
-  - repoURL: 'https://github.com/hippo-an/argo_app_of_apps_arch.git'
-    ref: values
-  - repoURL: 'https://charts.bitnami.com/bitnami'
-    targetRevision: 9.1.15 # 9.1.16 9.1.17
-    chart: apache
-    helm:
-      valueFiles:
-        - $values/image-values/dev/apache-dev-image-values.yaml
-        - $values/additional-values/dev/apache-dev-additional-values.yaml
-
+    - repoURL: 'https://github.com/hippo-an/argo_app_of_apps_arch.git'
+      ref: values
+    - repoURL: 'https://charts.bitnami.com/bitnami'
+      targetRevision: 9.1.16 # 9.1.16 9.1.17
+      chart: apache
+      helm:
+        valueFiles:
+          - $values/image-values/dev/apache-dev-image-values.yaml
+          - $values/additional-values/dev/apache-dev-additional-values.yaml
