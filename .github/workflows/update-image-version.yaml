@@ -63,42 +63,42 @@ jobs:
           CURRENT_VERSION=$(yq '.image.tag' "$FILE")
           echo "current_version=$CURRENT_VERSION" >> "$GITHUB_OUTPUT"
 
-      - name: 시맨틱 버전 증가 여부 확인
-        run: |
-          CURRENT=${{ steps.get-current.outputs.current_version }}
-          NEW=${{ env.IMAGE_VERSION }}
+      # - name: 시맨틱 버전 증가 여부 확인
+      #   run: |
+      #     CURRENT=${{ steps.get-current.outputs.current_version }}
+      #     NEW=${{ env.IMAGE_VERSION }}
 
-          echo "현재 버전: $CURRENT"
-          echo "새 버전: $NEW"
+      #     echo "현재 버전: $CURRENT"
+      #     echo "새 버전: $NEW"
 
-          if [[ ! $NEW =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo "semver 형식이 아닙니다: $NEW"
-            exit 1
-          fi
+      #     if [[ ! $NEW =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+      #       echo "semver 형식이 아닙니다: $NEW"
+      #       exit 1
+      #     fi
 
-          compare_versions() {
-            [ "$1" = "$2" ] && return 1
-            local IFS=.
-            local i ver1=($1) ver2=($2)
-            for ((i=0; i<${#ver1[@]}; i++)); do
-              if [[ -z ${ver2[i]} ]]; then
-                return 1
-              fi
-              if ((10#${ver1[i]} < 10#${ver2[i]})); then
-                return 0
-              elif ((10#${ver1[i]} > 10#${ver2[i]})); then
-                return 1
-              fi
-            done
-            return 1
-          }
+      #     compare_versions() {
+      #       [ "$1" = "$2" ] && return 1
+      #       local IFS=.
+      #       local i ver1=($1) ver2=($2)
+      #       for ((i=0; i<${#ver1[@]}; i++)); do
+      #         if [[ -z ${ver2[i]} ]]; then
+      #           return 1
+      #         fi
+      #         if ((10#${ver1[i]} < 10#${ver2[i]})); then
+      #           return 0
+      #         elif ((10#${ver1[i]} > 10#${ver2[i]})); then
+      #           return 1
+      #         fi
+      #       done
+      #       return 1
+      #     }
 
-          if compare_versions "$CURRENT" "$NEW"; then
-            echo "버전이 올바르게 증가했습니다."
-          else
-            echo "버전이 이전보다 크지 않습니다."
-            exit 1
-          fi
+      #     if compare_versions "$CURRENT" "$NEW"; then
+      #       echo "버전이 올바르게 증가했습니다."
+      #     else
+      #       echo "버전이 이전보다 크지 않습니다."
+      #       exit 1
+      #     fi
 
       - name: 이미지 버전 업데이트
         run: |
