@@ -1,14 +1,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: nginx-dev
+  name: apache-dev
   namespace: argocd
 spec:
   project: default
-  # source:
-  #   repoURL: https://charts.bitnami.com/bitnami
-  #   chart: nginx
-  #   targetRevision: 15.5.0 # 15.5.1 15.5.2
   destination:
     server: https://kubernetes.default.svc
     namespace: test-ns
@@ -20,9 +16,10 @@ spec:
   - repoURL: 'https://github.com/hippo-an/argo_app_of_apps_arch.git'
     ref: values
   - repoURL: 'https://charts.bitnami.com/bitnami'
-    targetRevision: 15.5.0 # 15.5.1 15.5.2
-    chart: nginx
+    targetRevision: 9.1.5 # 9.1.6 9.1.7
+    chart: apache
     helm:
       valueFiles:
-        - $values/image-values/dev/nginx-dev-image-values.yaml
-        - $values/additional-values/dev/nginx-dev-additional-values.yaml
+        - $values/image-values/dev/apache-dev-image-values.yaml
+        - $values/additional-values/dev/apache-dev-additional-values.yaml
+
