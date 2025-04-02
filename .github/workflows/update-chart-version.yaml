@@ -1,0 +1,73 @@
+name: "[update] helm chart version"
+
+on:
+  workflow_dispatch:
+    inputs:
+      env:
+        type: choice
+        description: 'choose deployment environment'
+        default: dev
+        options:
+          - dev
+          - staging
+          - prod
+        required: true
+      application:
+        type: choice
+        description: 'choose application'
+        default: apache
+        options:
+          - apache
+          - nginx
+        required: true
+      chart_version:
+        description: 'new helm chart version (e.g., 9.1.17)'
+        required: true
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+env:
+  ENV: ${{ inputs.env }}
+  APPLICATION: ${{ inputs.application }}
+  CHART_VERSION: ${{ inputs.chart_version }}
+
+jobs:
+  update-helm-version:
+    name: 'Update Helm Chart Version'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          repository: hippo-an/argo_app_of_apps_arch
+          ref: main
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+
+      - name: yq 설치
+        run: |
+          sudo wget https://github.com/mikefarah/yq/releases/download/v4.40.5/yq_linux_amd64 -O /usr/bin/yq
+          sudo chmod +x /usr/bin/yq
+
+      - name: Helm 차트 버전 업데이트 (sources 마지막 요소)
+        run: |
+          FILE=applications/${{ env.ENV }}/${{ env.APPLICATION }}-${{ env.ENV }}.yaml
+
+          if [ ! -f "$FILE" ]; then
+            echo "파일이 존재하지 않습니다: $FILE"
+            exit 1
+          fi
+
+          yq -i '.spec.sources[-1].targetRevision = strenv(CHART_VERSION)' "$FILE"
+
+
+      - name: 변경 사항 커밋 및 푸시
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add applications/${{ env.ENV }}/${{ env.APPLICATION }}-${{ env.ENV }}.yaml
+          git commit -m "Update helm chart version to ${{ env.CHART_VERSION }} for ${{ env.APPLICATION }} in ${{ env.ENV }}"
+          git push
