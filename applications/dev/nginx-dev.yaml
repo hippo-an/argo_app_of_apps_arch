@@ -17,12 +17,12 @@ spec:
       selfHeal: true
       prune: true
   sources:
-  - repoURL: 'https://github.com/hippo-an/argo_app_of_apps_arch.git'
-    ref: values
-  - repoURL: 'https://charts.bitnami.com/bitnami'
-    targetRevision: 15.5.0 # 15.5.1 15.5.2
-    chart: nginx
-    helm:
-      valueFiles:
-        - $values/image-values/dev/nginx-dev-image-values.yaml
-        - $values/additional-values/dev/nginx-dev-additional-values.yaml
+    - repoURL: 'https://github.com/hippo-an/argo_app_of_apps_arch.git'
+      ref: values
+    - repoURL: 'https://charts.bitnami.com/bitnami'
+      targetRevision: 15.5.1 # 15.5.1 15.5.2
+      chart: nginx
+      helm:
+        valueFiles:
+          - $values/image-values/dev/nginx-dev-image-values.yaml
+          - $values/additional-values/dev/nginx-dev-additional-values.yaml
