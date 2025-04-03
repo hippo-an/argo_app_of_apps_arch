@@ -20,7 +20,7 @@ spec:
     - repoURL: 'https://github.com/hippo-an/argo_app_of_apps_arch.git'
       ref: values
     - repoURL: 'https://charts.bitnami.com/bitnami'
-      targetRevision: 15.5.1 # 15.5.1 15.5.2
+      targetRevision: 15.5.2 # 15.5.1 15.5.2
       chart: nginx
       helm:
         valueFiles:
